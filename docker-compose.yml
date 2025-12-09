@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # 后端 API 服务
+  api-server:
+    # 指定构建上下文为 server 目录
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    # 给这个容器起个名字
+    container_name: ad_api_server
+    # 如果容器挂了，自动重启
+    restart: always
+    # 内部端口 3001 不需要映射到主机，因为它只和前端容器通信
+
+  # 前端 Web 服务 (Nginx)
+  web-client:
+    # 依赖于后端服务，确保后端先启动
+    depends_on:
+      - api-server
+    # 指定构建上下文为 client 目录
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: ad_web_client
+    restart: always
+    # 将主机的 80 端口映射到容器的 80 端口
+    # 这样我们就可以通过服务器 IP 直接访问前端了
+    ports:
+      - "80:80"
+
