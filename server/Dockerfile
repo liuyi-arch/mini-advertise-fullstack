@@ -1,5 +1,5 @@
 # 使用一个官方的、轻量的 Node.js 18 镜像作为基础
-FROM node:18-alpine
+FROM node:23-alpine
 
 # 在容器内创建一个工作目录
 WORKDIR /app
